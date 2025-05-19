@@ -34,6 +34,8 @@ void loadArtists(vector<Artist> &artists);
 char menu();
 void SearchCard();
 string SearchCardByName(string name);
+void SearchArtist();
+string SearchArtistByName(string name);
 
 int main() {
     vector<Card> cards;
@@ -41,13 +43,15 @@ int main() {
     vector<Colection> collection;
     char op;
 
-    loadCards(cards);
+    //loadCards(cards);
     loadArtists(artists);
 
     op = menu();
     while (op != '0') {
         if (op == '1') {
             SearchCard();
+        } else if (op == '2') {
+            SearchArtist();
         }
         op = menu();
     }
@@ -78,8 +82,9 @@ void loadArtists(vector<Artist> &artists) {
 
     ifstream file("artists.txt");
 
-    while (file >> a.uuid >> a.name) {
+    while (file >> a.name >> a.uuid ) {
         artists.push_back(a);
+        cout << a.name << ", ";
     }
 
     file.close();
@@ -92,7 +97,7 @@ char menu() {
 
     cout << "*****************************" << endl;
     cout << "1.- Buscar carta" << endl;
-    cout << "2.- Opcion tal" << endl;
+    cout << "2.- Buscar artista" << endl;
     cout << "3.- Opcion cual" << endl;
     cout << "0.- Salir" << endl;
     cout << "*****************************" << endl;
@@ -133,6 +138,45 @@ string SearchCardByName(string name) {
     file.close();
     if (found) {
         return c.uuid;
+    } else {
+        return "";
+    }
+}
+
+
+void SearchArtist() {
+    string uuid;
+    string name;
+
+    cout << "Artist name: ";
+    cin >> name;
+
+    uuid = SearchArtistByName(name);
+
+    if (uuid == "") {
+        cout << "Not found" << endl;
+    } else {
+        cout << uuid << endl;
+    }
+}
+
+string SearchArtistByName(string name) {
+    Artist a;
+    bool found = false;
+
+    ifstream file("artist.txt");
+
+    while (found == false && file >> a.name >> a.uuid) {
+        if (a.name == name) {
+            found = true;
+        } else {
+            cout << a.name;
+        }
+    }
+
+    file.close();
+    if (found) {
+        return a.name;
     } else {
         return "";
     }
