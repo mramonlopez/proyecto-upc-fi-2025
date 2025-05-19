@@ -32,6 +32,8 @@ struct Colection {
 void loadCards(vector<Card> &cards);
 void loadArtists(vector<Artist> &artists);
 char menu();
+void SearchCard();
+string SearchCardByName(string name);
 
 int main() {
     vector<Card> cards;
@@ -44,6 +46,9 @@ int main() {
 
     op = menu();
     while (op != '0') {
+        if (op == '1') {
+            SearchCard();
+        }
         op = menu();
     }
 
@@ -86,7 +91,7 @@ char menu() {
     char op;
 
     cout << "*****************************" << endl;
-    cout << "1.- Opcion 1" << endl;
+    cout << "1.- Buscar carta" << endl;
     cout << "2.- Opcion tal" << endl;
     cout << "3.- Opcion cual" << endl;
     cout << "0.- Salir" << endl;
@@ -95,4 +100,40 @@ char menu() {
     cin >> op;
 
     return op;
+}
+
+void SearchCard() {
+    string uuid;
+    string name;
+
+    cout << "Card name: ";
+    cin >> name;
+
+    uuid = SearchCardByName(name);
+
+    if (uuid == "") {
+        cout << "Not found" << endl;
+    } else {
+        cout << uuid << endl;
+    }
+}
+
+string SearchCardByName(string name) {
+    Card c;
+    bool found = false;
+
+    ifstream file("cards.txt");
+
+    while (found == false && file >> c.uuid >> c.name >> c.colors >> c.manaCost >> c.manaValue >> c.rarity >> c.power >> c.toughness >> c.type >> c.types >> c.artistIds) {
+        if (c.name == name) {
+            found = true;
+        }
+    }
+
+    file.close();
+    if (found) {
+        return c.uuid;
+    } else {
+        return "";
+    }
 }
