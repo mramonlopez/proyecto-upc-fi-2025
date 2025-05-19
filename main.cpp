@@ -24,15 +24,29 @@ struct Artist {
     string name;
 };
 
+struct Colection {
+    string uuid;
+    int cant;
+};
+
 void loadCards(vector<Card> &cards);
 void loadArtists(vector<Artist> &artists);
+char menu();
 
 int main() {
     vector<Card> cards;
     vector<Artist> artists;
+    vector<Colection> collection;
+    char op;
+
     loadCards(cards);
     loadArtists(artists);
-    
+
+    op = menu();
+    while (op != '0') {
+        op = menu();
+    }
+
     return 0;
 }
 
@@ -42,7 +56,7 @@ void loadCards(vector<Card> &cards) {
     cards.clear();
 
     ifstream file("cards.txt");
-    
+
     while (file >> c.uuid >> c.name >> c.colors >> c.manaCost >> c.manaValue >> c.rarity >> c.power >> c.toughness >> c.type >> c.types >> c.artistIds) {
         cards.push_back(c);
     }
@@ -58,12 +72,27 @@ void loadArtists(vector<Artist> &artists) {
     artists.clear();
 
     ifstream file("artists.txt");
-    
+
     while (file >> a.uuid >> a.name) {
         artists.push_back(a);
     }
 
-    file.close();    
+    file.close();
 
     cout << "Loaded " << artists.size() << " artists" << endl;
+}
+
+char menu() {
+    char op;
+
+    cout << "*****************************" << endl;
+    cout << "1.- Opcion 1" << endl;
+    cout << "2.- Opcion tal" << endl;
+    cout << "3.- Opcion cual" << endl;
+    cout << "0.- Salir" << endl;
+    cout << "*****************************" << endl;
+
+    cin >> op;
+
+    return op;
 }
